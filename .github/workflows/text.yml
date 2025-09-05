@@ -16,3 +16,6 @@ jobs:
         run: echo ${{secrets.TEST_ENV}} >> .env
       - name: Сборка Docker Compose
         run: docker compose up -d --build
+      - name: Логи контейнера huntteam-server
+        run: docker logs huntteam-server
+
