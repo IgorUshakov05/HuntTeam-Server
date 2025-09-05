@@ -19,3 +19,5 @@ jobs:
       - name: Логи контейнера huntteam-server
         run: docker logs huntteam-server
 
+
+        
