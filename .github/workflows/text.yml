@@ -1,15 +1,17 @@
-name: GitHub Actions Demo
+name: Тест запуска сервера
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+
 on:
   push:
     branches:
       - dev
+
 jobs:
-    build:
-        runs-on: "ubuntu-latest" 
-        steps: 
-           - name: Кнонирование
-             uses: actions/checkout@v4
-           - name: "Вывод test"
-             run: echo Hello
-             
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Клонирование кода
+        uses: actions/checkout@v4
+
+      - name: Сборка Docker Compose
+        run: docker-compose up -d --build
