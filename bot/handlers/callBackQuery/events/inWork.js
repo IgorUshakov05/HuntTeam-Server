@@ -11,8 +11,8 @@ module.exports = async function toWork(ctx) {
     const applicationId = callbackData.split("_")[3];
     let app = await get_application_on_id(applicationId);
     if (!app.success) return ctx.reply("Заявка не найдена!");
-    if (!app.application.client_name || !app.application.phone) {
-      throw new Error("Missing required fields: client_name or phone");
+    if (!app.application.client_name || !app.application.link) {
+      throw new Error("Missing required fields: client_name or link");
     }
 
     if (!process.env.BASE_URL) {
@@ -32,7 +32,7 @@ module.exports = async function toWork(ctx) {
 👷 Менеджер: ${escapeHtml(manager.user.fullname)}
 
 👤 Имя: ${escapeHtml(app.application.client_name)}
-📞 Телефон: <code>${escapeHtml(app.application.phone)}</code>
+📞 Связь: <code>${escapeHtml(app.application.link)}</code>
 ✉️ Сообщение: 
 ${
   app.application.message

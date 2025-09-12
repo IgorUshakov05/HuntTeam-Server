@@ -46,19 +46,13 @@ router.post(
       .withMessage("Имя клиента обязательно.")
       .isString()
       .withMessage("Имя должно быть строкой.")
-      .isLength({ max: 20 })
-      .withMessage("Имя не должно превышать 20 символов."),
-
-    body("phone")
+      .isLength({ max: 100 })
+      .withMessage("Имя не должно превышать 100 символов."),
+    body("link")
       .exists({ checkFalsy: true })
-      .withMessage("Телефон обязателен.")
-      .isString()
-      .withMessage("Телефон должен быть строкой.")
-      .isLength({ max: 18 })
-      .withMessage("Телефон не должен превышать 18 символов.")
-      .matches(/^\+?[0-9\s\-()]+$/)
-      .withMessage("Некорректный формат номера телефона."),
-
+      .withMessage("Ссылка на связь обязательна")
+      .isLength({ max: 100, min: 5 })
+      .withMessage("Ссылка не > 100 и не < 5"),
     body("message")
       .optional()
       .isString()
@@ -81,8 +75,8 @@ router.post(
     }
 
     try {
-      const { client_name, phone, message } = req.body;
-
+      const { client_name, message, link } = req.body;
+      console.log(link)
       let savedFilename = null;
 
       if (req.file) {
@@ -97,18 +91,18 @@ router.post(
 
       const newRequest = await create_application({
         client_name,
-        phone,
+        link,
         message,
         file: savedFilename,
       });
       if (!newRequest.success)
         return res
           .json(500)
-          .json({ success: false, errors: ["Ошибка сервера"] });
+          .json({ success: false, error: "Ошибка сервера" });
       let telegram = await sendApplication(bot, {
         id: newRequest.id,
         client_name,
-        phone,
+        link: newRequest.link,
         message,
         file: savedFilename,
       });

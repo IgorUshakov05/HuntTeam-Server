@@ -18,6 +18,3 @@ jobs:
         run: docker compose up -d --build
       - name: Логи контейнера huntteam-server
         run: docker logs huntteam-server
-
-
-        

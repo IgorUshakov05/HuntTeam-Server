@@ -2,20 +2,20 @@ const Application = require("../Schema/Application");
 
 async function create_application({
   client_name,
-  phone,
+  link,
   message = null,
   file = null,
 }) {
   try {
     let newApplication = new Application({
       client_name,
-      phone,
+      link,
       message,
       file,
     });
 
     await newApplication.save();
-    return { success: true, id: newApplication.id };
+    return { success: true, id: newApplication.id, link };
   } catch (error) {
     console.log(error);
     return { success: false, message: error.message };
@@ -31,6 +31,7 @@ async function add_chats_id(id, messageIDs) {
       { id },
       { $set: { messageIDs } }
     );
+    console.log(application);
     if (!application) {
       throw new Error(`Application with id ${id} not found`);
     }

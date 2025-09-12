@@ -1,9 +1,11 @@
+const { get_chat_id_director } = require("../../database/Request/Director");
 const { get_menagers } = require("../../database/Request/User");
 
 module.exports = async (bot, data) => {
+  console.log(data)
   try {
-    if (!data.client_name || !data.phone) {
-      throw new Error("Missing required fields: client_name or phone");
+    if (!data.client_name || !data.link) {
+      throw new Error("Missing required fields: client_name or link");
     }
 
     if (!process.env.BASE_URL) {
@@ -73,11 +75,11 @@ module.exports = async (bot, data) => {
       messageIDs,
     };
   } catch (e) {
-    const errorMessage = escapeMarkdown(e.message);
-
+    let chatIDdirector = await get_chat_id_director()
+    console.log(chatIDdirector)
     await bot.telegram.sendMessage(
-      data.chat_id || process.env.ADMIN_CHAT_ID,
-      `❌ Ошибка:\n\`\`\`js\n${errorMessage}\n\`\`\``,
+      chatIDdirector.chat_id,
+      `❌ Ошибка:\n\`\`\`js\n${e.message}\n\`\`\``,
       { parse_mode: "MarkdownV2" }
     );
     return { success: false, message: "Ошибка при отправке" };
