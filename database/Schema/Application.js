@@ -17,13 +17,16 @@ const ApplicationSchema = new mongoose.Schema({
   },
   time_stamp: {
     type: Date,
-    default: new Date,
+    default: new Date(),
   },
   message: {
     type: String,
   },
   file: {
     type: String,
+  },
+  price: {
+    type: Number,
   },
   messageIDs: [
     {

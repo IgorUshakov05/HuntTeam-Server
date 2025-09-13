@@ -2,7 +2,7 @@ const { get_chat_id_director } = require("../../database/Request/Director");
 const { get_menagers } = require("../../database/Request/User");
 
 module.exports = async (bot, data) => {
-  console.log(data)
+  console.log(data);
   try {
     if (!data.client_name || !data.link) {
       throw new Error("Missing required fields: client_name or link");
@@ -27,7 +27,8 @@ module.exports = async (bot, data) => {
 📌 Новый заказ
 
 👤 Имя: ${escapeHtml(data.client_name)}
-📞 Телефон: <code>${escapeHtml(data.phone)}</code>
+📞 Связь: <code>${escapeHtml(data.link)}</code>
+💵 Цена: <code>${escapeHtml(data.price)}</code>
 ✉️ Сообщение: 
 <code>${data.message ? escapeHtml(data.message) : "Отсутствует"}</code>
 📎 Файл: ${fileUrl}`;
@@ -75,8 +76,8 @@ module.exports = async (bot, data) => {
       messageIDs,
     };
   } catch (e) {
-    let chatIDdirector = await get_chat_id_director()
-    console.log(chatIDdirector)
+    let chatIDdirector = await get_chat_id_director();
+    console.log(chatIDdirector);
     await bot.telegram.sendMessage(
       chatIDdirector.chat_id,
       `❌ Ошибка:\n\`\`\`js\n${e.message}\n\`\`\``,

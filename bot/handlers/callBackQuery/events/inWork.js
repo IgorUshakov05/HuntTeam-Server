@@ -33,14 +33,9 @@ module.exports = async function toWork(ctx) {
 
 👤 Имя: ${escapeHtml(app.application.client_name)}
 📞 Связь: <code>${escapeHtml(app.application.link)}</code>
+💵 Цена: <code>${app.application.price}₽</code>
 ✉️ Сообщение: 
-${
-  app.application.message
-    ? `<code>
-${escapeHtml(app.application.message)}
-</code>`
-    : "Отсутствует"
-}
+${app.application.message?`<code>${escapeHtml(app.application.message)}</code>`:"Отсутствует"}
 📎 Файл: ${fileUrl}
 `;
 

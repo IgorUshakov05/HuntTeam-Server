@@ -3,19 +3,21 @@ const Application = require("../Schema/Application");
 async function create_application({
   client_name,
   link,
+  price = null,
   message = null,
   file = null,
 }) {
   try {
     let newApplication = new Application({
       client_name,
+      price,
       link,
       message,
       file,
     });
 
     await newApplication.save();
-    return { success: true, id: newApplication.id, link };
+    return { success: true, id: newApplication.id, link, price };
   } catch (error) {
     console.log(error);
     return { success: false, message: error.message };

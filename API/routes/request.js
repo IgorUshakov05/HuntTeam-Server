@@ -62,7 +62,7 @@ router.post(
   ],
   async (req, res) => {
     const errors = validationResult(req);
-
+    console.log(req.body);
     if (!errors.isEmpty()) {
       if (req.file) {
         fs.unlink(path.join(storagePath, req.file.filename), () => {});
@@ -75,8 +75,8 @@ router.post(
     }
 
     try {
-      const { client_name, message, link } = req.body;
-      console.log(link)
+      const { client_name, message, link, price } = req.body;
+      console.log(link);
       let savedFilename = null;
 
       if (req.file) {
@@ -92,16 +92,16 @@ router.post(
       const newRequest = await create_application({
         client_name,
         link,
+        price,
         message,
         file: savedFilename,
       });
       if (!newRequest.success)
-        return res
-          .json(500)
-          .json({ success: false, error: "Ошибка сервера" });
+        return res.json(500).json({ success: false, error: "Ошибка сервера" });
       let telegram = await sendApplication(bot, {
         id: newRequest.id,
         client_name,
+        price,
         link: newRequest.link,
         message,
         file: savedFilename,
