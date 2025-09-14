@@ -3,6 +3,7 @@ const { get_menagers } = require("../../database/Request/User");
 
 module.exports = async (bot, data) => {
   console.log(data);
+  
   try {
     if (!data.client_name || !data.link) {
       throw new Error("Missing required fields: client_name or link");
@@ -28,9 +29,12 @@ module.exports = async (bot, data) => {
 
 👤 Имя: ${escapeHtml(data.client_name)}
 📞 Связь: <code>${escapeHtml(data.link)}</code>
-💵 Цена: <code>${escapeHtml(data.price)}</code>
-✉️ Сообщение: 
-<code>${data.message ? escapeHtml(data.message) : "Отсутствует"}</code>
+💵 Цена: <code>${escapeHtml(
+      data.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+    )}₽</code>
+✉️ Сообщение: <code>${
+      !!data.message ? escapeHtml(data.message) : "Отсутствует"
+    }</code>
 📎 Файл: ${fileUrl}`;
 
     const managers = await get_menagers();

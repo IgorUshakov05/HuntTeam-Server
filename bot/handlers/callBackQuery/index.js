@@ -1,3 +1,4 @@
+const { get_chat_id_director } = require("../../../database/Request/Director");
 const inWork = require("./events/inWork");
 const remove = require("./events/removeEmploye");
 
@@ -13,10 +14,14 @@ module.exports = (bot) => {
       }
     } catch (e) {
       console.log(e);
-      const errorMessage = e.message.replace(/[_*[\]()~`>#+=|{}.!-]/g, "\\$&");
-      await ctx.reply(`Отправьте ошибку:\n\`\`\`js\n${errorMessage}\n\`\`\``, {
-        parse_mode: "MarkdownV2",
-      });
+      let chatIDdirector = await get_chat_id_director();
+      console.log(chatIDdirector);
+      await bot.telegram.sendMessage(
+        chatIDdirector.chat_id,
+        `❌ Ошибка:\n\`\`\`js\n${e.message}\n\`\`\``,
+        { parse_mode: "MarkdownV2" }
+      );
+      await ctx.reply(`Отправьте! Подождите с вами свяжутся`);
 
       ctx.session.step = null;
       ctx.session.code = null;

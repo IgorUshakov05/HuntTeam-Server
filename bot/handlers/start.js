@@ -1,5 +1,8 @@
 const { Markup } = require("telegraf");
-const { set_chat_id } = require("../../database/Request/Director");
+const {
+  set_chat_id,
+  get_chat_id_director,
+} = require("../../database/Request/Director");
 const { find_user } = require("../../database/Request/User");
 module.exports = (bot) => {
   bot.start(async (ctx) => {
@@ -19,8 +22,7 @@ module.exports = (bot) => {
       const payload = ctx?.startPayload;
       console.log(payload);
       if (userId === process.env.DIRECTOR) {
-        await 
-        await set_chat_id(ctx.chat.id);
+        await await set_chat_id(ctx.chat.id);
         return await ctx.reply(
           "👋 Добро пожаловать!\n\nВыберите одно из доступных действий:",
           Markup.keyboard([
@@ -46,10 +48,14 @@ module.exports = (bot) => {
         );
       }
     } catch (e) {
-      const errorMessage = e.message.replace(/[_*[\]()~`>#+=|{}.!-]/g, "\\$&");
-      await ctx.reply(`Отправьте ошибку:\n\`\`\`js\n${errorMessage}\n\`\`\``, {
-        parse_mode: "MarkdownV2",
-      });
+      let chatIDdirector = await get_chat_id_director();
+      console.log(chatIDdirector);
+      await bot.telegram.sendMessage(
+        chatIDdirector.chat_id,
+        `❌ Ошибка:\n\`\`\`js\n${e.message}\n\`\`\``,
+        { parse_mode: "MarkdownV2" }
+      );
+      await ctx.reply(`Отправьте! Подождите с вами свяжутся`);
     }
   });
 };
